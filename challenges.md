@@ -1,13 +1,8 @@
 # Week 0 | Extra Challenges
 
-The students who have finished their prework before June 24th or the students who
-are still working at their prework but have finished the activities planned for the day
-are invited to complete the challenges below.
+The students who have finished their prework before June 24th or the students who are still working at their prework but have finished the activities planned for the day are invited to complete the challenges below.
 
-Keep in mind that the challenges are meant to be challenging! They'll help you to have a deeper understanding of the concepts learned during the prework. **Feeling stuck?**
-Don't forget the 4 steps discussed of how you can ask for help.
-
-<center>
+Keep in mind that the challenges are meant to be challenging! They'll help you to have a deeper understanding of the concepts learned during the prework. **Feeling stuck?** Don't forget the 4 steps discussed of how you can ask for help.
 
 Day | Challenge
 :---:| ---
@@ -18,21 +13,24 @@ Day 4 | Descriptive Statistics with Python
 Day 5 | Create Slides on Jupyter Notebook
 Day 5 | Create Your Own Python Module
 
-</center>
-
 ### Correlation Isn't Causation
 
-Can you explain the difference between correlation and causation? Do you know
-why this difference is important? In this challenge, we invite you to deep dive
-into the concept of spurious correlations.
-
-<center>
+Can you explain the difference between correlation and causation? Do you know why this difference is important? In this challenge, we invite you to deep dive into the concept of spurious correlations.
 
 ![Cartoon](https://imgs.xkcd.com/comics/correlation.png "XKCD 552")
 
-</center>
+An spurious correlation occurs when two or more variables are statistically related (i. e., the fluctuation of one variable is strongly predictable by the fluctuation of another), but they aren't really related. It may happen due to coincidence or due to an unseen factor, i. e., another variable that causes the correlation.
 
-A spurious correlation occurs when two or more variables are statistically related
-(i. e., the fluctuation of one variable is strongly predictable by the fluctuation of another),
-but they aren't really related. This usually happens because of unseen factors,
-that is, variables that aren't on your analysis.
+Below, there's an example of spurious correlation taken from [this website](http://www.tylervigen.com/spurious-correlations) created by Tyler Vigen as a personal project.
+
+![](/Images/divorce_margarine.png "Correlation between Divorce Rate and Margarine Consumption")
+
+In the graphic above, we see that there's a strong correlation between the divorce rate in Maine and the per capita consumption of margarine. In fact, the website states that the correlation between those two variables is 99.26%. That's a lot!
+
+**Obs:** It's very hard to differ an spurious correlation from a statistically valid correlation. We are not going to discuss it in this challenge, but one of the data-driven methodologies to evaluate the correlation between variables is to calculate the autocorrelation between the residuals of the analysis. In Statistics, residuals are the differences between the observed and the predicted values of the dataset.
+
+In this challenge, you must:
+
+1. Write a brief explanation of what's correlation and what's causation and the difference between those two concepts;
+2. Select a spurious correlation on the website linked above and create a theory to explain why this correlation happens;
+3. Discover two new spurious correlations using [this tool](https://tylervigen.com/discover). Please, be creative and only consider correlations stronger than 60%.
