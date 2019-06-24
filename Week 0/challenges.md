@@ -23,7 +23,7 @@ An spurious correlation occurs when two or more variables are statistically rela
 
 Below, there's an example of spurious correlation taken from [this website](http://www.tylervigen.com/spurious-correlations) created by Tyler Vigen as a personal project.
 
-![](/Images/divorce_margarine.png "Correlation between Divorce Rate and Margarine Consumption")
+![Graph](Images/divorce_margarine.png)
 
 In the graphic above, we see that there's a strong correlation between the divorce rate in Maine and the per capita consumption of margarine. In fact, the website states that the correlation between those two variables is 99.26%. That's a lot!
 
