@@ -1,0 +1,89 @@
+Git hub - Tutorial
+
+————————————————————————————————
+1. CONFIGURING AND READING GIT
+authenticate using git hub (reference)
+$ curl -u ‘<user_name>’ https://api.github.com/user
+		authenticate with password
+
+# checking version
+git --version
+
+# config variables
+git config --global user.name “<your_name>”
+git config --global user.email “<your_email>”
+
+# checking configuration
+git config --list
+
+# ignoring files
+# example: *.pyc — ignore all file with .pyc
+touch .gitignore
+echo “content file” >> file_name.extension
+
+————————————————————————————————
+GETTING REPOSITORIES
+
+2.1 CREATE NEW REPOSITORIES
+# create a file
+mkdir <directory_name>
+
+# DOING GITHUB CLICK BUTTON  WORK
+# create a repository on github
+# https://developer.github.com/v3/repos/#create
+curl -u ‘<username>’ https://api.github.com/user/repos -d '{"name”:”<repo_name>”, “private”: true}’
+
+# creating a file with file and fill it with information
+echo "# information” >> README.md
+
+# tell local machine that the directory is a git directory
+git init
+
+# tell git where to send local files to a remote repository
+# there is a remote repo and its origin under the following address
+git remote add origin https://github.com/<user_name>/<repo_name>
+
+# push code locally from origin to master
+git push -u origin master
+
+————————————————————————————————
+2.2. CLONE REPOSITORIES
+# clone the projects I want to work on ()
+$ git clone 
+
+————————————————————————————————
+2.3. FORK REPOSITORIES
+
+# fork a repositories on GitHub website
+# copy the https or SSH repository link
+# clone the repository link on your Git
+git clone <repo_address>
+
+# link to the central repository
+git remote add upstream <repo_address>
+
+# To verify that the remote has been added, check the list of remotes
+git remote -v
+
+
+————————————————————————————————
+WORKING ON CURRENT REPOSITORIES
+3. Sending files to local to stage area
+
+# adding files to the cache/ staging area
+git add <file>
+git add . # add all files
+
+# git add can’t be undone, but that’s a way to deal with that
+# removing files from stage area
+https://stackoverflow.com/questions/348170/how-do-i-undo-git-add-before-commit?rq=1
+git reset <file>
+git reset
+
+# Sending files to remote GitHub
+# commit the changes
+git commit
+git commit -m <comment>
+
+# Sending files to remote GitHub
+git push
