@@ -1,0 +1,803 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Before your start:\n",
+    "- Read the README.md file\n",
+    "- Comment as much as you can and use the resources (README.md file)\n",
+    "- Happy learning!"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# import numpy and pandas\n",
+    "import pandas as pd\n",
+    "import numpy as np"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Challenge 1 - Exploring the Data\n",
+    "\n",
+    "In this challenge, we will examine all salaries of employees of the City of Chicago. We will start by loading the dataset and examining its contents"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "salaries = pd.read_csv('../Current_Employee_Names__Salaries__and_Position_Titles.csv')"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Examine the `salaries` dataset using the `head` function below."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>Name</th>\n",
+       "      <th>Job Titles</th>\n",
+       "      <th>Department</th>\n",
+       "      <th>Full or Part-Time</th>\n",
+       "      <th>Salary or Hourly</th>\n",
+       "      <th>Typical Hours</th>\n",
+       "      <th>Annual Salary</th>\n",
+       "      <th>Hourly Rate</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>AARON,  JEFFERY M</td>\n",
+       "      <td>SERGEANT</td>\n",
+       "      <td>POLICE</td>\n",
+       "      <td>F</td>\n",
+       "      <td>Salary</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>101442.0</td>\n",
+       "      <td>NaN</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "                Name Job Titles Department Full or Part-Time Salary or Hourly  \\\n",
+       "0  AARON,  JEFFERY M   SERGEANT     POLICE                 F           Salary   \n",
+       "\n",
+       "   Typical Hours  Annual Salary  Hourly Rate  \n",
+       "0            NaN       101442.0          NaN  "
+      ]
+     },
+     "execution_count": 7,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "salaries.head(1)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "<class 'pandas.core.frame.DataFrame'>\n",
+      "RangeIndex: 33183 entries, 0 to 33182\n",
+      "Data columns (total 8 columns):\n",
+      "Name                 33183 non-null object\n",
+      "Job Titles           33183 non-null object\n",
+      "Department           33183 non-null object\n",
+      "Full or Part-Time    33183 non-null object\n",
+      "Salary or Hourly     33183 non-null object\n",
+      "Typical Hours        8022 non-null float64\n",
+      "Annual Salary        25161 non-null float64\n",
+      "Hourly Rate          8022 non-null float64\n",
+      "dtypes: float64(3), object(5)\n",
+      "memory usage: 2.0+ MB\n"
+     ]
+    }
+   ],
+   "source": [
+    "salaries.info()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "We see from looking at the `head` function that there is quite a bit of missing data. Let's examine how much missing data is in each column. Produce this output in the cell below"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Hourly Rate          25161\n",
+       "Typical Hours        25161\n",
+       "Annual Salary         8022\n",
+       "Salary or Hourly         0\n",
+       "Full or Part-Time        0\n",
+       "Department               0\n",
+       "Job Titles               0\n",
+       "Name                     0\n",
+       "dtype: int64"
+      ]
+     },
+     "execution_count": 12,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "salaries.isnull().sum().sort_values(ascending=False)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let's also look at the count of hourly vs. salaried employees. Write the code in the cell below"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "##### We can use pd.crosstab to cross two variables\n",
+    "* https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.crosstab.html"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 33,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# crossing type of employee payment -- 'department' x 'Salary or Hourly'\n",
+    "cross_pay_type = pd.crosstab(salaries['Department'], salaries['Salary or Hourly']).sort_values(by='Hourly',ascending=False)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 35,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th>Salary or Hourly</th>\n",
+       "      <th>Hourly</th>\n",
+       "      <th>Salary</th>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>Department</th>\n",
+       "      <th></th>\n",
+       "      <th></th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>STREETS &amp; SAN</th>\n",
+       "      <td>1862</td>\n",
+       "      <td>336</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "Salary or Hourly  Hourly  Salary\n",
+       "Department                      \n",
+       "STREETS & SAN       1862     336"
+      ]
+     },
+     "execution_count": 35,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "cross_pay_type.head(1)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 59,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# selecting salaried employees\n",
+    "salary_employees = salaries[salaries['Salary or Hourly'] == 'Salary']"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 60,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "hourly_employees = salaries[salaries['Salary or Hourly'] == 'Hourly']"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 61,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "(25161, 8)"
+      ]
+     },
+     "execution_count": 61,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "salary_employees.shape"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 47,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Series([], Name: Hourly Rate, dtype: int64)"
+      ]
+     },
+     "execution_count": 47,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# counting the number of missing values of 'Hourly Rate'\n",
+    "salary_employees['Hourly Rate'].value_counts()\n",
+    "# all missing values"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "What this information indicates is that the table contains information about two types of employees - salaried and hourly. Some columns apply only to one type of employee while other columns only apply to another kind. This is why there are so many missing values. Therefore, we will not do anything to handle the missing values."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "There are different departments in the city. List all departments and the count of employees in each department."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 49,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "POLICE           13414\n",
+       "FIRE              4641\n",
+       "STREETS & SAN     2198\n",
+       "OEMC              2102\n",
+       "WATER MGMNT       1879\n",
+       "Name: Department, dtype: int64"
+      ]
+     },
+     "execution_count": 49,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "salaries['Department'].value_counts().head()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Challenge 2 - Hypothesis Tests\n",
+    "\n",
+    "In this section of the lab, we will test whether the hourly wage of all hourly workers is significantly different from $30/hr. Import the correct one sample test function from scipy and perform the hypothesis test for a 95% two sided confidence interval."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "How to identify the kind of hypothesis test we have to choose?\n",
+    "* 1. Type of variable:\n",
+    "    > * categorical or numerical variable\n",
+    "* 2. Number of samples that will be compared\n",
+    "    > * 1sample: compare the result with a kpi/ milestone\n",
+    "    > * 2sample: compare the result with a control/ treat group or A/B test\n",
+    "    > * 2 or more samples\n",
+    "    \n",
+    "!['title](https://scontent.fsdu17-1.fna.fbcdn.net/v/t1.0-9/67806604_2816188055064914_3051626967351689216_n.jpg?_nc_cat=107&_nc_oc=AQnRb2UAy7iN0gt-avcntDySYOejBn_4j4xYNfezRmo3N9bvPbrMPhL56Ax2w3hty3w&_nc_ht=scontent.fsdu17-1.fna&oh=e1aaa2faf8accbf9abfd8c1c8a770c8a&oe=5DE08AA5)\n",
+    "\n",
+    "Source (https://drive.google.com/file/d/1QLUjutIaDBNd8q_PDlOQdWzRV0tFCVSq/view)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "__After selecting the type of test, let's select the if it is a one or two tail test__\n",
+    "1. Greater and higher than: one tail\n",
+    "2. Different from: two tails\n",
+    "\n",
+    "!['title](https://s3-us-west-2.amazonaws.com/courses-images/wp-content/uploads/sites/1729/2017/04/15032352/m8_inference_one_proportion_topic_8_3_m8_hypo_testing_for_proportion_2_image5.png)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 50,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# This is a two-sided test for the null hypothesis that the expected value (mean) of a sample \n",
+    "# of independent observations is equal to the given population mean.\n",
+    "from scipy.stats import ttest_1samp"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "__Let's answer the question about for the 'Hourly Rate' variable:__\n",
+    "1. It is a numerical column\n",
+    "2. Compare the result with a KPI -- in this case 30/hour -- which means it is a 1sample test\n",
+    "\n",
+    "__Hypothesis__:\n",
+    "* Ho: the mean hourly wage is equal to 30/h\n",
+    "* Ha: the mean hourly wage is different to 30/h"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 62,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# select the 'hourly rate' from hourly employees\n",
+    "hourly_rate = salaries[salaries['Salary or Hourly'] == 'Hourly']['Hourly Rate']"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 63,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "4     19.86\n",
+       "6     46.10\n",
+       "7     35.60\n",
+       "10     2.65\n",
+       "18    17.68\n",
+       "Name: Hourly Rate, dtype: float64"
+      ]
+     },
+     "execution_count": 63,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "hourly_rate.head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 76,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# consider alpha = 0.05\n",
+    "alpha = 0.05"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 67,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# call ttest_1samp() passing the hourly_rate and 30 as a parameter\n",
+    "ttest_hourly, p = ttest_1samp(hourly_rate, 30)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 99,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>Name</th>\n",
+       "      <th>Job Titles</th>\n",
+       "      <th>Department</th>\n",
+       "      <th>Full or Part-Time</th>\n",
+       "      <th>Salary or Hourly</th>\n",
+       "      <th>Typical Hours</th>\n",
+       "      <th>Annual Salary</th>\n",
+       "      <th>Hourly Rate</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>AARON,  JEFFERY M</td>\n",
+       "      <td>SERGEANT</td>\n",
+       "      <td>POLICE</td>\n",
+       "      <td>F</td>\n",
+       "      <td>Salary</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>101442.0</td>\n",
+       "      <td>NaN</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "                Name Job Titles Department Full or Part-Time Salary or Hourly  \\\n",
+       "0  AARON,  JEFFERY M   SERGEANT     POLICE                 F           Salary   \n",
+       "\n",
+       "   Typical Hours  Annual Salary  Hourly Rate  \n",
+       "0            NaN       101442.0          NaN  "
+      ]
+     },
+     "execution_count": 99,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "salary_employees.head(1)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 119,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import scipy as ss\n",
+    "\n",
+    "def hyp_test(col, mean_test, one_tail=True, alpha=0.05):\n",
+    "    if one_tail == True:\n",
+    "        stats, p = ss.stats.ttest_1samp(col, mean_test)\n",
+    "    if one_tail==False:\n",
+    "        stats, p = ss.stats.ttest_ind(col, mean_test)\n",
+    "    return(stats,p)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 120,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "/Users/liviaclarete/.pyenv/versions/dataAnalysis/lib/python3.6/site-packages/numpy/core/fromnumeric.py:3157: RuntimeWarning: Degrees of freedom <= 0 for slice\n",
+      "  **kwargs)\n",
+      "/Users/liviaclarete/.pyenv/versions/dataAnalysis/lib/python3.6/site-packages/numpy/core/_methods.py:132: RuntimeWarning: invalid value encountered in double_scalars\n",
+      "  ret = ret.dtype.type(ret / rcount)\n"
+     ]
+    },
+    {
+     "data": {
+      "text/plain": [
+       "(nan, nan)"
+      ]
+     },
+     "execution_count": 120,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "hyp_test(hourly_employees['Hourly Rate'], 30, one_tail=False)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 95,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "ttest_1samp stats 20.6198057854942\n",
+      "p-value:  4.3230240486229894e-92\n",
+      "Reject null hypothesis\n"
+     ]
+    }
+   ],
+   "source": [
+    "print('ttest_1samp stats', ttest_hourly)\n",
+    "print('p-value: ', p)\n",
+    "\n",
+    "if p > alpha:\n",
+    "    print('Do not reject null hypothesis')\n",
+    "else:\n",
+    "    print('Reject null hypothesis')"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "We are also curious about salaries in the police force. The chief of police in Chicago claimed in a press briefing that salaries this year are higher than last year's mean of $86000/year a year for all salaried employees. Test this one sided hypothesis using a 95% confidence interval.\n",
+    "\n",
+    "Hint: A one tailed test has a p-value that is half of the two tailed p-value. If our hypothesis is greater than, then to reject, the test statistic must also be positive."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from scipy.stats import i\n",
+    "# H0: Salaries = 86000/year \n",
+    "# H1: Salaries > 86000/year \n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Using the `crosstab` function, find the department that has the most hourly workers. "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 94,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "STREETS & SAN is the department with more hourly employees\n"
+     ]
+    }
+   ],
+   "source": [
+    "h_department = pd.crosstab(salaries['Department'], salaries['Salary or Hourly']).sort_values(by='Hourly', ascending=False).head(1)\n",
+    "print('STREETS & SAN is the department with more hourly employees')"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The workers from the department with the most hourly workers have complained that their hourly wage is less than $35/hour. Using a one sample t-test, test this one-sided hypothesis at the 95% confidence level."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 92,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "\n",
+    "# Ho: the mean hourly wage is equal to $35/hour.\n",
+    "# Ha: the mean hourly wage is different to $35/hour.\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# TWO TAILED TEST - OPTION 1\n",
+    "# Ho: the mean hourly wage is equal to $35/hour.\n",
+    "# Ha: the mean hourly wage is different to $35/hour.\n",
+    "\n",
+    "alpha = 0.05;\n",
+    "streets_filtered = salaries[(salaries['Salary or Hourly'] == 'Hourly') & (salaries['Department'] == 'STREETS & SAN')]\n",
+    "streets_salaries = streets_filtered['Hourly Rate']\n",
+    "st, p = ttest_1samp(streets_salaries, 35)\n",
+    "\n",
+    "if p < alpha:\n",
+    "    print(\"Null hypothesis rejected\")\n",
+    "    if st < 0:\n",
+    "        print(\"The mean hourly wage is lower than $35/hour\")\n",
+    "    else: \n",
+    "        print(\"The mean hourly wage is greater than $35/hour\")\n",
+    "else:\n",
+    "    print(\"Null hypothesis can't be rejected\")\n",
+    "    \n",
+    "print('Statistic: ', st)\n",
+    "print('p-value: ', p)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Challenge 3 - Constructing Confidence Intervals\n",
+    "\n",
+    "While testing our hypothesis is a great way to gather empirical evidence for accepting or rejecting the hypothesis, another way to gather evidence is by creating a confidence interval. A confidence interval gives us information about the true mean of the population. So for a 95% confidence interval, we are 95% sure that the mean of the population is within the confidence interval. \n",
+    ").\n",
+    "\n",
+    "To read more about confidence intervals, click [here](https://en.wikipedia.org/wiki/Confidence_interval).\n",
+    "\n",
+    "\n",
+    "In the cell below, we will construct a 95% confidence interval for the mean hourly wage of all hourly workers. \n",
+    "\n",
+    "The confidence interval is computed in SciPy using the `t.interval` function. You can read more about this function [here](https://docs.scipy.org/doc/scipy-0.14.0/reference/generated/scipy.stats.t.html).\n",
+    "\n",
+    "To compute the confidence interval of the hourly wage, use the 0.95 for the confidence level, number of rows - 1 for degrees of freedom, the mean of the sample for the location parameter and the standard error for the scale. The standard error can be computed using [this](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.sem.html) function in SciPy."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Your code here:\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Now construct the 95% confidence interval for all salaried employeed in the police in the cell below."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Your code here:\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Challenge 4 - Hypothesis Tests of Proportions\n",
+    "\n",
+    "Another type of one sample test is a hypothesis test of proportions. In this test, we examine whether the proportion of a group in our sample is significantly different than a fraction. \n",
+    "\n",
+    "You can read more about one sample proportion tests [here](http://sphweb.bumc.bu.edu/otlt/MPH-Modules/BS/SAS/SAS6-CategoricalData/SAS6-CategoricalData2.html).\n",
+    "\n",
+    "In the cell below, use the `proportions_ztest` function from `statsmodels` to perform a hypothesis test that will determine whether the number of hourly workers in the City of Chicago is significantly different from 25% at the 95% confidence level."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 13,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Your code here:\n"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.6.0"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 4
+}
